@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utlities {
+	::-webkit-resizer {
+		display: none;
+	}
+
+	/* Scrollbar */
+
+	/* ::-webkit-scrollbar {
+		@apply h-2.5 w-[13px] rounded-md;
+	}
+
+	::-webkit-scrollbar-track {
+		@apply bg-slate-50;
+	}
+
+	::-webkit-scrollbar-thumb {
+		@apply bg-sky-200 hover:bg-sky-300  rounded-2xl shadow-sm transition duration-300 ease-in-out;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		@apply cursor-pointer;
+	}
+
+	::-webkit-scrollbar-corner {
+		@apply opacity-0;
+	} */
+}
+*:focus {
+	outline: 0 !important;
+	box-shadow: 0 0 0 0.2rem #fff,
+		/* use site bg color to create whitespace for faux focus ring */ 0
+			0 0 0.35rem #069 !important; /* faux focus ring color */
+}
+
+/**
+ * Undo the above focused button styles when the element received focus
+ * via mouse click or touch, but not keyboard navigation.
+ */
+*:focus:not(:focus-visible) {
+	outline: 0 !important;
+	box-shadow: none !important;
+}
+
+input,
+select,
+textarea {
+	background-color: transparent !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+	@apply ring-0 !important;
+	outline: none !important;
+}
+
+@theme {
+	--animate-loader-text: loaderText 1.5s linear infinite;
+
+	@keyframes loaderText {
+		0% {
+			opacity: 0.5;
+			transform: scale(0.5);
+		}
+		50% {
+			opacity: 1;
+			transform: scale(0.9);
+		}
+		100% {
+			opacity: 0.5;
+			transform: scale(0.5);
+		}
+	}
+}
+
+.edit {
+	@apply text-sky-500 font-semibold;
+}
+.deactivate {
+	@apply text-red-600 font-semibold;
+}
+
+.plugins .active td {
+	@apply text-sky-600;
+}
+
+.plugin-title {
+	@apply font-semibold text-lg text-sky-600 !important;
+}
+
+.plugin-description p {
+	@apply text-[15px] text-sky-700 !important;
+}
+.plugin-version-author-uri {
+	@apply text-[14px] text-sky-700;
+}
+
+#wpwrap {
+	@apply min-h-screen;
+}
+
+#wpcontent {
+	@apply min-h-fit;
+}
+
+/* Scrollbar */
+/* Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+.no-scrollbar {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
+
+/* For modern browsers supporting scrollbar-color */
+/* Custom Scrollbar using Tailwind colors */
+
+@layer base {
+	@supports selector(::-webkit-scrollbar) {
+		*::-webkit-scrollbar {
+			width: 13px;
+			height: 13px;
+		}
+
+		*::-webkit-scrollbar-thumb {
+			background-color: theme('colors.sky.200'); /* Vibrant Sky */
+			border-radius: 8px;
+		}
+
+		*::-webkit-scrollbar-thumb::hover {
+			background-color: theme(
+				'colors.sky.400'
+			); /* Even more vibrant on hover */
+		}
+
+		*::-webkit-scrollbar-track {
+			background-color: theme(
+				'colors.gray.200'
+			); /* Clean background */
+		}
+	}
+
+	@supports (scrollbar-color: auto) {
+		* {
+			scrollbar-color: theme('colors.sky.300')
+				theme('colors.gray.200');
+			scrollbar-width: auto;
+		}
+	}
+}
