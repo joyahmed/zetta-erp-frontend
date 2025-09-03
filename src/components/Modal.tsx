@@ -88,7 +88,7 @@ class Modal extends Component<ModalProps> {
 							isOpen ? 'z-[9999999999]' : '-z-[9999999]'
 						}
             cursor-text
-            ${dynamicClass ? dynamicClass : 'mt-5 md:mt-0'}
+            ${dynamicClass ? dynamicClass : 'mt-5 lg:mt-1'}
           `}
 					// onClick={this.handleOverlayClick}
 				>

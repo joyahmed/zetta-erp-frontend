@@ -5,13 +5,13 @@ const CrudActions = lazy(
 );
 const TableCell = lazy(() => import('@/components/table/TableCell'));
 
-interface AttendanceTableBodyProps {
+interface EmployeeAttendanceTableBodyProps {
 	tableData: AttendanceProps[] | undefined;
 }
 
-const AttendanceTableBody = ({
+const EmployeeAttendanceTableBody = ({
 	tableData
-}: AttendanceTableBodyProps) => {
+}: EmployeeAttendanceTableBodyProps) => {
 	return (
 		<tbody>
 			{tableData && tableData.length > 0 ? (
@@ -20,17 +20,6 @@ const AttendanceTableBody = ({
 						key={item.id}
 						className='border dark:border-sky-500/30 border-l-0 border-r-0 border-b-0'
 					>
-						<TableCell>
-							<CrudActions
-								{...{
-									id: item.id,
-									link: '/attendance',
-									route: 'attendance',
-									showView: false,
-									showBarcode: false
-								}}
-							/>
-						</TableCell>
 						<TableCell {...{ text: index + 1 }} />
 						<TableCell
 							text={item.first_name + ' ' + item.last_name || 'N/A'}
@@ -41,7 +30,7 @@ const AttendanceTableBody = ({
 									formatDate(item.attendance_date.toString()) || 'N/A'
 							}}
 						/>
-						<TableCell {...{ text: item.status || 'N/A' }} />
+											<TableCell {...{ text: item.status || 'N/A' }} />
 						<TableCell
 							{...{ text: item?.check_in_time?.toString() || 'N/A' }}
 						/>
@@ -54,6 +43,12 @@ const AttendanceTableBody = ({
 							{...{ text: item?.total_working_hours || 'N/A' }}
 						/>
 						<TableCell {...{ text: item?.overtime || 'N/A' }} />
+						{/* <TableCell
+							{...{ text: item?.created_at?.toString() || 'N/A' }}
+						/>
+						<TableCell
+							{...{ text: item?.updated_at?.toString() || 'N/A' }}
+						/> */}
 					</tr>
 				))
 			) : (
@@ -70,4 +65,4 @@ const AttendanceTableBody = ({
 	);
 };
 
-export default AttendanceTableBody;
+export default EmployeeAttendanceTableBody;

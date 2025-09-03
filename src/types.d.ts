@@ -179,6 +179,10 @@ interface AttendanceProps {
 	attendance_date: string;
 	check_in_time?: string;
 	check_out_time?: string;
+	late_status?: string;
+	late_time?: string;
+	total_working_hours?: string;
+	overtime?: string;
 	created_at?: string;
 }
 
@@ -278,6 +282,7 @@ type OrganizationProps = {
 	company_logo?: string;
 	phone: string;
 	email: string;
+	allowed_ip?: string;
 };
 
 interface AccountsReceivableProps {
@@ -349,6 +354,18 @@ interface HolidaysProps {
 		| 'Observance';
 	holiday_status: 'Approved' | 'Pending' | 'Cancelled';
 	description: string;
+}
+interface LeaveRequestProps {
+	id: number;
+	employee_id: number;
+	first_name: string;
+	last_name: string;
+	start_date: string;
+	end_date: string;
+	total_days: number;
+	leave_type: string;
+	reason: string;
+	status: string;
 }
 
 interface CalendarDaysProps {

@@ -1,9 +1,8 @@
-import useHandleSearch from '@/components/hooks/useHandleSearch';
 import { useResetTableData } from '@/components/hooks/useResetTableData';
 import { useGlobal } from '@/context/GlobalContext';
-import { makeUpperCase } from '@/utils/makeUpperCase';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import useHandleSearch from './useHandleSearch';
 
 export interface EmployeeProps {
 	id: number;
@@ -20,23 +19,26 @@ interface ItemState {
 	searchText: string;
 }
 
-export const useAttendanceForm = () => {
+export const useLeaveForm = () => {
 	const { handleResetTableData } = useResetTableData();
 	const {
 		globalState: { action, id }
 	} = useGlobal();
+
 	const [query, setQuery] = useState('');
-	const [errors, setErrors] = useState<{ [key: string]: string }>({});
+	const [errors, setErrors] = useState<{ [k: string]: string }>({});
 	const [formData, setFormData] = useState({
 		employee_id: '',
-		status: '',
-		attendance_date: '',
 		first_name: '',
 		last_name: '',
 		employee_name: '',
-		check_in_time: '',
-		check_out_time: ''
+		start_date: '',
+		end_date: '',
+		leave_type: '',
+		reason: '',
+		status: ''
 	});
+
 	const [itemState, setItemState] = useState<ItemState>({
 		employees: [],
 		filteredEmployees: [],
@@ -93,36 +95,34 @@ export const useAttendanceForm = () => {
 
 	useEffect(() => {
 		if (id && id !== 0) {
-			fetch(
-				`${window.zettaSettingsData.api_url}hrm/attendance/${id}`,
-				{
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-WP-Nonce': window.zettaSettingsData.nonce
-					},
-					credentials: 'include'
-				}
-			)
+			fetch(`${window.zettaSettingsData.api_url}hrm/leaves/${id}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-WP-Nonce': window.zettaSettingsData.nonce
+				},
+				credentials: 'include'
+			})
 				.then(response => response.json())
 				.then(data => {
 					if (data) {
 						setFormData(prevFormData => ({
-							...prevFormData, // retain other fields
+							...prevFormData,
 							employee_id: data.employee_id || '',
+							start_date: data.start_date || '',
+							end_date: data.end_date || '',
+							leave_type: data.leave_type || '',
+							reason: data.reason || '',
 							status: data.status || '',
-							attendance_date: data.attendance_date || '',
 							employee_name:
 								data.first_name && data.last_name
 									? `${data.first_name} ${data.last_name}`
-									: '',
-							check_in_time: data.check_in_time || '',
-							check_out_time: data.check_out_time || ''
+									: ''
 						}));
 					}
 				})
 				.catch(error =>
-					console.error('Error fetching attendance data:', error)
+					console.error('Error fetching leave data:', error)
 				);
 		}
 	}, [id]);
@@ -143,61 +143,34 @@ export const useAttendanceForm = () => {
 	});
 
 	const handleChange = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+		e: React.ChangeEvent<
+			HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+		>
 	) => {
 		const { name, value } = e.target;
-		// If changing the attendance status
-		if (name === 'status') {
-			setFormData(prev => ({
-				...prev,
-				[name]: value,
-				...(value !== 'Present' && {
-					check_in_time: '',
-					check_out_time: ''
-				})
-			}));
-		} else {
-			setFormData(prev => ({
-				...prev,
-				[name]: value
-			}));
-		}
+		setFormData(prev => ({ ...prev, [name]: value }));
 	};
-	const validateForm = () => {
-		const validationErrors: { [key: string]: string } = {};
+
+	const validate = () => {
+		const e: { [k: string]: string } = {};
 		if (!formData.employee_id.trim()) {
-			validationErrors.employee_id =
-				'Employee name and id are required.';
+			e.employee_id = 'Employee name and id are required.';
 		}
-		if (!formData.attendance_date.trim()) {
-			validationErrors.attendance_date =
-				'Attendance date is required.';
-		}
-		if (!formData.status) {
-			validationErrors.status = 'Status is required.';
-		}
-
-		// if (formData.status === 'Present') {
-		// 	if (!formData.check_in_time) {
-		// 		validationErrors.check_in_time = 'Check in time is required.';
-		// 	}
-		// 	if (!formData.check_out_time) {
-		// 		validationErrors.check_out_time =
-		// 			'Check out time is required.';
-		// 	}
-		// }
-
-		setErrors(validationErrors);
-
-		return Object.keys(validationErrors).length === 0;
+		if (!formData.start_date) e.start_date = 'Start date is required';
+		if (!formData.end_date) e.end_date = 'End date is required';
+		if (!formData.leave_type) e.leave_type = 'Leave type is required';
+		if (!formData.reason.trim()) e.reason = 'Reason is required';
+		setErrors(e);
+		return Object.keys(e).length === 0;
 	};
 
-	const handleSubmitAttendance = async () => {
-		if (!validateForm()) return;
+	const handleSubmit = async () => {
+		if (!validate()) return;
+
 		const submitUrl =
 			action === 'create'
-				? `${window.zettaSettingsData.api_url}hrm/attendance`
-				: `${window.zettaSettingsData.api_url}hrm/attendance/edit/${id}`;
+				? `${window.zettaSettingsData.api_url}hrm/leaves/request`
+				: `${window.zettaSettingsData.api_url}hrm/leaves/edit/${id}`;
 
 		try {
 			const response = await fetch(submitUrl, {
@@ -206,36 +179,31 @@ export const useAttendanceForm = () => {
 					'Content-Type': 'application/json',
 					'X-WP-Nonce': window.zettaSettingsData.nonce
 				},
+				credentials: 'include',
 				body: JSON.stringify(formData)
 			});
 			const responseData = await response.json();
 			if (response.ok) {
 				toast.success(
-					responseData.message || 'Attendance submitted successfully!'
+					responseData.message || 'Leave submitted successfully!'
 				);
 				setTimeout(() => {
 					handleResetTableData();
 				}, 1000);
 			} else {
 				toast.error(
-					makeUpperCase(
-						responseData.message || 'Error submitting attendance.'
-					)
+					responseData.message || 'Error submitting leave.'
 				);
 			}
 		} catch (error) {
-			toast.error('Error submitting attendance. Please try again.');
+			toast.error('Error submitting leave. Please try again.');
 		}
 	};
-
 	const dataArray = searchText ? employees : filteredEmployees;
 
-	// Handle Load More
 	const handleLoadMore = async () => {
 		if (dataArray.length >= totalItems) return;
-
 		const nextPage = page + 1;
-
 		setItemState(prev => ({
 			...prev,
 			page: nextPage
@@ -247,10 +215,10 @@ export const useAttendanceForm = () => {
 		action,
 		formData,
 		setFormData,
-		handleSubmitAttendance,
-		filteredEmployees,
 		handleChange,
+		filteredEmployees,
 		inputValue,
+		handleSubmit,
 		handleSearch,
 		handleLoadMore,
 		errors

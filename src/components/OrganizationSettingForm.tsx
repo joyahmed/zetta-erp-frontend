@@ -45,7 +45,7 @@ const OrganizationSettingForm = () => {
 				showSubmitCondition,
 				outerHeight: 'min-h-[12rem]',
 				innerHeight: 'min-h-[10rem]',
-				cols: 'grid-cols-1',
+				cols: 'grid-cols-1 lg:grid-cols-2',
 				textareaRows: 2
 			}}
 		/>

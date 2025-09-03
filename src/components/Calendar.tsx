@@ -28,7 +28,7 @@ const Calendar = () => {
 	const apiUrl = `${window.zettaSettingsData.api_url}`;
 	const { weekends } = useWeekendsForm();
 	const effectiveWeekends =
-		weekends && weekends.length ? weekends : ['Friday', 'Saturday'];
+		weekends && weekends.length ? weekends : []; //remove default weekends friday saturday, use empty default
 	const weekStartIndex = getWeekStartIndex(effectiveWeekends);
 	useEffect(() => {
 		const fetchHolidays = async () => {

@@ -18,7 +18,7 @@ const TabbedFormFooter = ({
 }: TabbedFormFooterProps) => {
 	return (
 		<>
-			<div className='flex justify-between items-center w-full md:w-1/3 my-5 gap-5'>
+			<div className='flex items-center justify-center space-x-5 lg:space-x-8  my-5 gap-5'>
 				<TabFormFooterButton
 					{...{
 						onClick: handlePrevTab,
@@ -62,7 +62,7 @@ const TabFormFooterButton = ({
 		<button
 			type='button'
 			{...{ onClick, disabled }}
-			className={`py-2 rounded-md w-1/2 font-semibold ${
+			className={` rounded-md h-10 w-24 font-semibold ${
 				disabled
 					? 'bg-gray-300 text-gray-500 cursor-not-allowed'
 					: 'bg-sky-500 text-white hover:bg-sky-400'

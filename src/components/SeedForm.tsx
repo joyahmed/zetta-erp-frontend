@@ -37,14 +37,14 @@ const SeedForm = ({ setGlobalState }: SeedFormProps) => {
 
 			if (data?.success) {
 				toast.success(data.message);
-				setTimeout(
-					() =>
-						setGlobalState(prev => ({
-							...prev,
-							isOpen: false
-						})),
-					2000
-				);
+				// setTimeout(
+				// 	() =>
+				// 		setGlobalState(prev => ({
+				// 			...prev,
+				// 			isOpen: false
+				// 		})),
+				// 	2000
+				// );
 			} else {
 				toast.error(data.message);
 			}

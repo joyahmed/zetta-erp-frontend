@@ -7,4 +7,5 @@ export interface TabFieldItem<T extends FieldValues = FieldValues> {
 	options?: { value: string | number; label: string }[] | string[];
 	required?: boolean;
 	tab: number;
+	colspan?: string;
 }

@@ -13,7 +13,7 @@ const TabbedFormTabs = ({
 	handleTabChange
 }: TabbedFormTabsProps) => {
 	return (
-		<div className='flex flex-col items-center justify-center lg:flex-row border-b mb-4 w-full space-y-2 md:space-y-0'>
+		<div className='flex flex-col items-center justify-center lg:flex-row border-b mb-4 w-full space-y-2 lg:space-y-0'>
 			{tabItems.map(tab => (
 				<button
 					key={tab.id}

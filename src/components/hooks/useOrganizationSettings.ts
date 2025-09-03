@@ -18,6 +18,10 @@ interface OrganizationProps {
 	phone: string;
 	email: string;
 	company_logo: string;
+	allowed_ip?: string;
+	office_checkin_time?: string;
+	office_checkout_time?: string;
+	grace_minutes?: number;
 }
 
 export const useOrganizationSetting = () => {

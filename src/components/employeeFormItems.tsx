@@ -130,7 +130,7 @@ export const getEmployeeFields = (
 			label: 'Employment Status',
 			type: 'custom-select',
 			name: 'employment_status',
-			options: ['Full Time', 'Part Time', 'Internship', 'Remote'],
+			options: ['Full Time', 'Part Time', 'Internship', 'Remote', 'Freelance'],
 			required: true
 		},
 

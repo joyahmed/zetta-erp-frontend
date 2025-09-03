@@ -8,8 +8,8 @@ import {
 	UseFormSetValue,
 	UseFormWatch
 } from 'react-hook-form';
-import TabbedFormBody from './TabbedFormBody';
-import TabbedFormTabs from './TabbedFormTabs';
+const TabbedFormBody = lazy(() => import('./TabbedFormBody'));
+const TabbedFormTabs = lazy(() => import('./TabbedFormTabs'));
 const TabbedFormFooter = lazy(() => import('./TabbedFormFooter'));
 
 interface TabbedFormProps<T extends FieldValues = FieldValues> {

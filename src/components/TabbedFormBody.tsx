@@ -38,9 +38,8 @@ const TabbedFormBody = <T extends FieldValues>({
 	innerHeight,
 	textareaRows
 }: TabbedFormBodyProps<T>) => {
-
 	const handleRemoveFile = (field: Path<T>, index?: number) => {
-		const fieldValue = watch(field); 
+		const fieldValue = watch(field);
 		if (Array.isArray(fieldValue)) {
 			const updatedFiles = [...fieldValue];
 			updatedFiles.splice(index!, 1);
@@ -58,7 +57,7 @@ const TabbedFormBody = <T extends FieldValues>({
 		>
 			{fieldItems
 				.filter(field => field.tab === activeTab)
-				.map(({ label, type, name, options, required }) => {
+				.map(({ label, type, name, options, required, colspan }) => {
 					const fieldValue = watch(name as Path<T>);
 
 					const handleSelectChange = (
@@ -70,7 +69,7 @@ const TabbedFormBody = <T extends FieldValues>({
 					};
 
 					return (
-						<div key={String(name)} className='mb-4'>
+						<div key={String(name)} className={`mb-4 ${colspan}`}>
 							{/* Hide Label for Specific Fields */}
 							{type !== 'file' && (
 								<label className='block font-medium'>{label}</label>

@@ -40,7 +40,7 @@ const AttendanceForm = () => {
 							name='attendance_date'
 							value={formData.attendance_date || ''}
 							onChange={handleChange}
-							className='w-full p-3 border rounded-lg'
+							className='w-full h-9 p-3 border rounded-lg'
 							placeholder='Select Date'
 						/>
 						{errors.attendance_date && (

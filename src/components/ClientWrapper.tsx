@@ -29,13 +29,13 @@ interface ClientWrapperProps<T extends object> {
 	headingText: string;
 	buttonText: string;
 	searchBoxText: string;
-	showCreate: boolean;
+	showCreate: boolean | React.ReactNode;
 	showSearch: boolean;
 	TableBody: React.ComponentType<{
 		tableData: T[];
 		totalItems: number;
 	}>;
-	modalContent: React.ReactNode;
+	modalContent?: React.ReactNode;
 	dynamicClass?: string;
 	dynamicClassTwo?: string;
 	menuItems: MenuItem[];
@@ -69,7 +69,7 @@ const ClientWrapper = <T extends object>({
 	showActions,
 	bulkDelete,
 	removeMarginTop = true,
-	loading
+	loading,
 }: ClientWrapperProps<T>) => {
 	const {
 		itemState: { searchText },
@@ -88,7 +88,7 @@ const ClientWrapper = <T extends object>({
 		initialData,
 		totalItems,
 		columns,
-		fetchData
+		fetchData,
 	});
 
 	useQuery<T>({
@@ -133,7 +133,7 @@ const ClientWrapper = <T extends object>({
 			>
 				{/* Top Controls */}
 				<div className='flex flex-col lg:flex-row gap-y-6 lg:gap-y-0 items-center justify-between w-full my-7'>
-					{showCreate ? (
+					{showCreate === true ? (
 						<CreateButton
 							{...{
 								text: buttonText,
@@ -142,6 +142,8 @@ const ClientWrapper = <T extends object>({
 								bulkDelete
 							}}
 						/>
+					) : showCreate ? (
+						showCreate
 					) : (
 						<div
 							className={`w-full ${
